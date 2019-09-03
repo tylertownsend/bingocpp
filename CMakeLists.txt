@@ -158,12 +158,13 @@ add_custom_target( git_update
 # ------------------------------------------------------------------------------
 # The following makes sure that an up-to-date version of googletest is available,
 # and built so that it may be used by your tests. 
+add_subdirectory(${PROJECT_SOURCE_DIR}/external/googletest)
 add_library( googletest
-    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc
-    ${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc )
+    ${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest-all.cc
+    ${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest_main.cc )
 add_dependencies(googletest git_update)
-set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest-all.cc  PROPERTIES GENERATED 1)
-set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/src/gtest_main.cc PROPERTIES GENERATED 1)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest-all.cc  PROPERTIES GENERATED 1)
+set_source_files_properties(${PROJECT_SOURCE_DIR}/external/googletest/googletest/src/gtest_main.cc PROPERTIES GENERATED 1)
 
 
 # ------------------------------------------------------------------------------

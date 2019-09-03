@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <iostream>
 #include <numeric>
 #include <random>
@@ -20,6 +21,7 @@ void weights_and_items_have_equal_size(const std::vector<T>& items,
   if (weights.size() != items.size()) {
     std::cout << "Initialization of ProbabilityMassFunction with "
               << "items and weights of different dimensions\n";
+    throw std::invalid_argument("Invalid argument.");
   }
 }
 
@@ -30,15 +32,18 @@ void check_valid_weights(const Eigen::VectorXd& weights,
       (weights.minCoeff() < 0.0))) {
         std::cout << "Invalid weights encountered "
                   << "in ProbabilityMassFunction" << std::endl;
+    throw std::invalid_argument("Invalid argument.");
   }
 }
 
 void normalize_weights(const Eigen::VectorXd& weights,
                        double& total_weight,
                        Eigen::VectorXd& normalized_weights) {
+  double PERCENTAGE = 100;
   total_weight = weights.sum();
   normalized_weights = weights / total_weight;
   check_valid_weights(normalized_weights, weights);
+  normalized_weights *= PERCENTAGE;
 }
 
 double get_mean_current_weight(const double& total_weight,
@@ -90,7 +95,7 @@ void ProbabilityMassFunction<T>::addItem(T new_item, double new_weight) {
   Eigen::VectorXd weights(normalized_weights_.size() + 1);
   weights << total_weight_ * normalized_weights_, new_weight;
   weights_ = weights;
-  normalize_weights(weights, total_weight_, normalized_weights_);
+  normalize_weights(weights_, total_weight_, normalized_weights_);
 }
 
 template<typename T>
@@ -98,7 +103,7 @@ T ProbabilityMassFunction<T>::drawSample() {
   std::random_device rd;
   std::mt19937 engine(rd());
   double* the_data = normalized_weights_.data();
-  std::discrete_distribution<double> dist({0.4, 0.4, 0.2});
+  std::discrete_distribution<int> dist(the_data);
   return items_[dist(engine)];
 }
 } // namespace bingo
