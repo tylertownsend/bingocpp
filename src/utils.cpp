@@ -180,12 +180,12 @@ Eigen::ArrayXXd convolution(const Eigen::ArrayXXd &data_points,
       w_ind = half_filter_size;
     }
     convolution(i) = 0;
-    std::cout << "convolution" << std::endl;
+    // std::cout << "convolution" << std::endl;
     for (int j = half_filter_size * -1; j < half_filter_size + 1; ++j) {
-      std::cout << "j = " << j << std::endl;
+      // std::cout << "j = " << j << std::endl;
       convolution(i) += data_points(data_points_center + j)
                        * weights(j + half_filter_size, w_ind);
-      std::cout << convolution << std::endl;
+      // std::cout << convolution << std::endl;
     }
   }
   return convolution;
