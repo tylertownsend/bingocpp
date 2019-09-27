@@ -163,7 +163,7 @@ Eigen::ArrayXXd convolution(const Eigen::ArrayXXd &data_points,
   int data_points_center = 0;
   int w_ind = 0;
   int data_points_len = data_points.rows();
-  Eigen::ArrayXXd convolution(data_points_len, 1);
+  Eigen::ArrayXd convolution(data_points_len, 1);
 
   for (int i = 0; i < data_points_len; ++i) {
     if (i < half_filter_size) {
