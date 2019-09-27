@@ -41,7 +41,7 @@ void update_return_values (int start,
     *x_return << x_segment;
     time_deriv_return->resize(time_deriv.rows(), time_deriv.cols());
     *time_deriv_return << time_deriv;
-    std::cout << "time_driv in update values start = 0\n";
+    std::cout << "time_driv in update values start = " << start << "\n";
     std::cout << *time_deriv_return << std::endl;
   } else {
     Eigen::ArrayXXd x_temp = *x_return;
@@ -64,6 +64,8 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
   int return_value_rows = (x.rows() - kPartialEdgeSize) * break_points.size();
   Eigen::ArrayXXd x_return(return_value_rows, x.cols());
   Eigen::ArrayXXd time_deriv_return(x_return.rows(), x_return.cols());
+  std::cout << "break_points" << std::endl;
+  for (auto i = 0; i < break_points.size(); i++) { std::cout << break_points[i] << std::endl;}
   for (std::vector<int>::iterator break_point = break_points.begin();
       break_point != break_points.end();
       break_point ++) {
@@ -86,6 +88,9 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
                                 x_segment.rows() - kPartialWindowSize,
                                 x_segment.cols());
     
+    std::cout << "break point " << *break_point << std::endl;
+    std::cout << "x_segment\n" << x_segment << std::endl;
+    std::cout << "time deriv\n" << time_deriv << std::endl;
     update_return_values(start, x_segment, time_deriv, 
                          &x_return, &time_deriv_return);
     start = *break_point + 1;
