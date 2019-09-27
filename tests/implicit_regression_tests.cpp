@@ -143,7 +143,7 @@ TEST(ImplicitRegressionPartials, PartialCalculationInTrainingDataNaN) {
                 data_input;
   auto training_data = new ImplicitTrainingData(data_array);
   Eigen::ArrayXd expected_derivative = Eigen::ArrayXd::Constant(26, 2.0);
-  std::cout << "data rows: " << training_data->dx_dt << std::endl
+  std::cout << "data rows: " << training_data->dx_dt.size() << std::endl
             << "data\n" << training_data->dx_dt << std::endl;
   std::cout << "deriv rows: " << expected_derivative.rows() << std::endl
             << "deriv\n" << expected_derivative << std::endl;

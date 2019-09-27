@@ -13,6 +13,8 @@
 
 #include "BingoCpp/utils.h"
 
+#include <iostream>
+
 namespace bingo {
 
 const int kPartialWindowSize = 7;
@@ -38,6 +40,8 @@ void update_return_values (int start,
     x_return->resize(x_segment.rows(), x_segment.cols());
     *x_return << x_segment;
     time_deriv_return->resize(time_deriv.rows(), time_deriv.cols());
+    std::cout << "time_driv in update values start = 0\n";
+    std::cout << *time_deriv_return << std::endl;
     *time_deriv_return << time_deriv;
   } else {
     Eigen::ArrayXXd x_temp = *x_return;
@@ -47,6 +51,8 @@ void update_return_values (int start,
     time_deriv_return->resize(time_deriv_return->rows() + time_deriv.rows(),
                               time_deriv_return->cols());
     *time_deriv_return << deriv_temp, time_deriv;
+    std::cout << "time_driv in update values start = 0\n";
+    std::cout << *time_deriv_return << std::endl;
   }
 }
 
@@ -65,12 +71,14 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
                                         *break_point - start,
                                         x.cols());
     Eigen::ArrayXXd time_deriv(x_segment.rows(), x_segment.cols());
+
     for (int col = 0; col < x_segment.cols(); col ++) {
       time_deriv.col(col) = SavitzkyGolay(x_segment.col(col),
                                           kPartialWindowSize,
                                           kPartialEdgeSize,
                                           kDerivativeOrder);
     }
+
     time_deriv = time_deriv.block(kPartialEdgeSize, 0, 
                                   time_deriv.rows() - kPartialWindowSize,
                                   time_deriv.cols());
