@@ -37,24 +37,26 @@ void update_return_values (int start,
                            const Eigen::ArrayXXd &time_deriv,
                            Eigen::ArrayXXd *x_return,
                            Eigen::ArrayXXd *time_deriv_return) {
-  if (start ==  0) {
-    x_return->resize(x_segment.rows(), x_segment.cols());
-    *x_return << x_segment;
-    time_deriv_return->resize(time_deriv.rows(), time_deriv.cols());
-    *time_deriv_return << time_deriv;
-    std::cout << "time_driv in update values start = " << start << "\n";
-    std::cout << *time_deriv_return << std::endl;
-  } else {
-    Eigen::ArrayXXd x_temp = *x_return;
-    x_return->resize(x_return->rows() + x_segment.rows(), x_return->cols());
-    *x_return << x_temp, x_segment;
-    Eigen::ArrayXXd deriv_temp = *time_deriv_return;
-    time_deriv_return->resize(time_deriv_return->rows() + time_deriv.rows(),
-                              time_deriv_return->cols());
-    *time_deriv_return << deriv_temp, time_deriv;
-    std::cout << "time_driv in update values start = " << start << "\n";
-    std::cout << *time_deriv_return << std::endl;
-  }
+  *x_return << x_segment;
+  *time_deriv_return << time_deriv;
+  // if (start ==  0) {
+  //   x_return->resize(x_segment.rows(), x_segment.cols());
+  //   *x_return << x_segment;
+  //   time_deriv_return->resize(time_deriv.rows(), time_deriv.cols());
+  //   *time_deriv_return << time_deriv;
+  //   std::cout << "time_driv in update values start = " << start << "\n";
+  //   std::cout << *time_deriv_return << std::endl;
+  // } else {
+  //   Eigen::ArrayXXd x_temp = *x_return;
+  //   x_return->resize(x_return->rows() + x_segment.rows(), x_return->cols());
+  //   *x_return << x_temp, x_segment;
+  //   Eigen::ArrayXXd deriv_temp = *time_deriv_return;
+  //   time_deriv_return->resize(time_deriv_return->rows() + time_deriv.rows(),
+  //                             time_deriv_return->cols());
+  //   *time_deriv_return << deriv_temp, time_deriv;
+  //   std::cout << "time_driv in update values start = " << start << "\n";
+  //   std::cout << *time_deriv_return << std::endl;
+  // }
 }
 
 InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
