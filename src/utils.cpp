@@ -87,17 +87,17 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
       time_deriv.col(col) = return_value;
     }
     std::cout << "time deriv before\n" << time_deriv << std::endl;
-    time_deriv = time_deriv.block(kPartialEdgeSize, 0, 
+    auto time_deriv_temp = time_deriv.block(kPartialEdgeSize, 0, 
                                   time_deriv.rows() - kPartialWindowSize,
                                   time_deriv.cols());
-    x_segment = x_segment.block(kPartialEdgeSize, 0,
+    auto x_segment_temp = x_segment.block(kPartialEdgeSize, 0,
                                 x_segment.rows() - kPartialWindowSize,
                                 x_segment.cols());
     
     std::cout << "break point " << *break_point << std::endl;
-    std::cout << "x_segment rows " << x_segment.rows() << "\n" << x_segment << std::endl;
-    std::cout << "time deriv rows " << time_deriv.rows() << "\n" << time_deriv << std::endl;
-    update_return_values(start, x_segment, time_deriv, 
+    std::cout << "x_segment rows " << x_segment.rows() << "\n" << x_segment_temp << std::endl;
+    std::cout << "time deriv rows " << time_deriv.rows() << "\n" << time_deriv_temp << std::endl;
+    update_return_values(start, x_segment_temp, time_deriv_temp, 
                          &x_return, &time_deriv_return);
     start = *break_point + 1;
   }
