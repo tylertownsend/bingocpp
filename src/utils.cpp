@@ -86,7 +86,7 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
       std::cout << "return value from SG size:" << return_value.rows() << std::endl << return_value << std::endl;
       time_deriv.col(col) = return_value;
     }
-
+    std::cout << "time deriv before\n" << time_deriv << std::endl;
     time_deriv = time_deriv.block(kPartialEdgeSize, 0, 
                                   time_deriv.rows() - kPartialWindowSize,
                                   time_deriv.cols());
