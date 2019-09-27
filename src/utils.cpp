@@ -37,26 +37,26 @@ void update_return_values (int start,
                            const Eigen::ArrayXXd &time_deriv,
                            Eigen::ArrayXXd *x_return,
                            Eigen::ArrayXXd *time_deriv_return) {
-  *x_return << x_segment;
-  *time_deriv_return << time_deriv;
-  // if (start ==  0) {
-  //   x_return->resize(x_segment.rows(), x_segment.cols());
-  //   *x_return << x_segment;
-  //   time_deriv_return->resize(time_deriv.rows(), time_deriv.cols());
-  //   *time_deriv_return << time_deriv;
-  //   std::cout << "time_driv in update values start = " << start << "\n";
-  //   std::cout << *time_deriv_return << std::endl;
-  // } else {
-  //   Eigen::ArrayXXd x_temp = *x_return;
-  //   x_return->resize(x_return->rows() + x_segment.rows(), x_return->cols());
-  //   *x_return << x_temp, x_segment;
-  //   Eigen::ArrayXXd deriv_temp = *time_deriv_return;
-  //   time_deriv_return->resize(time_deriv_return->rows() + time_deriv.rows(),
-  //                             time_deriv_return->cols());
-  //   *time_deriv_return << deriv_temp, time_deriv;
-  //   std::cout << "time_driv in update values start = " << start << "\n";
-  //   std::cout << *time_deriv_return << std::endl;
-  // }
+  // *x_return << x_segment;
+  // *time_deriv_return << time_deriv;
+  if (start ==  0) {
+    x_return->resize(x_segment.rows(), x_segment.cols());
+    *x_return << x_segment;
+    time_deriv_return->resize(time_deriv.rows(), time_deriv.cols());
+    *time_deriv_return << time_deriv;
+    std::cout << "time_driv in update values start = " << start << "\n";
+    std::cout << *time_deriv_return << std::endl;
+  } else {
+    Eigen::ArrayXXd x_temp = *x_return;
+    x_return->resize(x_return->rows() + x_segment.rows(), x_return->cols());
+    *x_return << x_temp, x_segment;
+    Eigen::ArrayXXd deriv_temp = *time_deriv_return;
+    time_deriv_return->resize(time_deriv_return->rows() + time_deriv.rows(),
+                              time_deriv_return->cols());
+    *time_deriv_return << deriv_temp, time_deriv;
+    std::cout << "time_driv in update values start = " << start << "\n";
+    std::cout << *time_deriv_return << std::endl;
+  }
 }
 
 InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
@@ -75,6 +75,7 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
     Eigen::ArrayXXd x_segment = x.block(start, 0, 
                                         *break_point - start,
                                         x.cols());
+    std::cout << "x_segment dim\n" << x_segment.rows() << std::endl;
     Eigen::ArrayXXd time_deriv(x_segment.rows(), x_segment.cols());
 
     for (int col = 0; col < x_segment.cols(); col ++) {
@@ -82,7 +83,7 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
                                           kPartialWindowSize,
                                           kPartialEdgeSize,
                                           kDerivativeOrder);
-      std::cout << "return value from SG" << return_value << std::endl;
+      std::cout << "return value from SG size:" << return_value.rows() << std::endl << return_value << std::endl;
       time_deriv.col(col) = return_value;
     }
 
@@ -94,8 +95,8 @@ InputAndDeriviative CalculatePartials(const Eigen::ArrayXXd &x) {
                                 x_segment.cols());
     
     std::cout << "break point " << *break_point << std::endl;
-    std::cout << "x_segment\n" << x_segment << std::endl;
-    std::cout << "time deriv\n" << time_deriv << std::endl;
+    std::cout << "x_segment rows " << x_segment.rows() << "\n" << x_segment << std::endl;
+    std::cout << "time deriv rows " << time_deriv.rows() << "\n" << time_deriv << std::endl;
     update_return_values(start, x_segment, time_deriv, 
                          &x_return, &time_deriv_return);
     start = *break_point + 1;
@@ -205,6 +206,8 @@ Eigen::ArrayXXd SavitzkyGolay(Eigen::ArrayXXd y,
         GramWeight(i, j, m, polynomial_order, derivative_order);
     }
   }
+  std::cout << "y:\n";
+  std::cout << y << std::endl;
   return convolution(y, m, weights);
 }
 } // namespace bingo
