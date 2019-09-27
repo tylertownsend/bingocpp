@@ -8,6 +8,7 @@
  * sybolic regression problems in the bingo package
  */
 
+#include <iostream>
 #include <vector>
 #include <numeric>
 
